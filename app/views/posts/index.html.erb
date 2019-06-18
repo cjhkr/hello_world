@@ -1,0 +1,35 @@
+<h1>Posts#index</h1>
+<p>Find me in app/views/posts/index.html.erb</p>
+
+<form action="/posts/create" method="Post">
+    <input type="text" name="title">
+    <input type="text" name="content">
+    <button type="submit">글작성하기</button>
+</form>
+
+<% @posts.each do |p| %>
+        <p>글쓴이 :<a href="/posts/profile/<%=p.user.id%>"><%=p.user.email%></a></p>
+        <p>제목 : <%=p.title%></p>
+        <p>내용 : <%=p.content%></p>
+        <a href="/posts/destroy/<%=p.id%>" style="color:red;">삭제</a>
+        <a href="/posts/edit/<%=p.id%>">수정</a>
+        
+        <% if current_user.is_like?(p)%>
+            <a href="/likes/toggle/<%=p.id%>">좋아요 취소</a>
+        <% else %>
+            <a href="/likes/toggle/<%=p.id%>">좋아요</a>
+        <% end %>
+        좋아요 수 : <%=p.likes.count%>
+        
+    <div class="pane<%=p.id%>">   
+        <% p.comments.each do |comment| %>
+             <%=render "/comments/comment", comment:comment %>
+        <% end %>
+    </div> 
+            <form class="nifty_form" action="/posts/comment_create/<%=p.id%>" accept-charset="UTF-8" data-remote="true" method="post">
+              <input type="hidden" name="authenticity_token" value="NRkFyRWxdYNfUg7vYxLOp2SLf93lvnl+QwDWorR42Dp6yZXPhHEb6arhDOIWcqGit8jfnrPwL781/xlrzj63TA==" />
+              <input type="text" name="content" id="comment_input">
+              <button type="submit">댓글작성하기</button>
+            </form>
+    
+<% end %>

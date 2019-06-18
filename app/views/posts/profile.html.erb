@@ -1,0 +1,10 @@
+<p><%=@profile_user.email%></p>
+<p>쓴 글 갯수<%=@profile_user.posts.count%></p>
+<p>팔로잉 : <%=@profile_user.followings.count%> 팔로워 : <%=@profile_user.followers.count%></p>
+<% if current_user.id!=@profile_user.id%>
+    <% if current_user.followings.include?(@profile_user)%>
+        <p><a href="/follows/destroy/<%=@profile_user.id%>">팔로우취소</a></p>
+    <% else %>
+        <p><a href="/follows/create/<%=@profile_user.id%>">팔로우하기</a></p>
+    <% end %>
+<% end %>
